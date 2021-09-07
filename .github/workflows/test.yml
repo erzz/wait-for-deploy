@@ -1,0 +1,60 @@
+name: Tests
+on: push
+
+jobs:
+  # <---------------- TEST BASIC CONFIG ------------------>
+  #fake-deploy:
+  #  name: Fake Deploy
+  #  runs-on: ubuntu-latest
+  #  environment:
+  #    name: Test-Deploy
+  #    url: https://github.com/erzz
+  #  steps:
+  #    - name: deploy
+  #      id: deploy
+  #      run: | 
+  #        echo "Pretending to deploy for 5 secs...."
+  #        sleep 5
+  inactive-case:
+    name: Inactive Case
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test Inactive Case
+        id: inactive
+        uses: ./
+        with:
+          project: erzz/deploy-status
+          token: ${{ secrets.TESTING_TOKEN}}
+          deploy-id: 418159134
+          exit-code-on-failure: 0
+
+      - name: Verify
+        env:
+          RESULT: ${{ steps.inactive.outputs.deploy-result }}
+        run: |
+          if [ "$RESULT" = "inactive" ]; then exit 0; else exit 1; fi
+
+  success-case:
+    name: Success Case
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test Success Case
+        id: success
+        uses: ./
+        with:
+          project: erzz/deploy-status
+          token: ${{ secrets.TESTING_TOKEN}}
+          deploy-id: 418168583
+          exit-code-on-failure: 0
+
+      - name: Verify
+        env:
+            RESULT: ${{ steps.success.outputs.deploy-result }}
+        run: |
+          if [ "$RESULT" = "success" ]; then exit 0; else exit 1; fi

@@ -1,0 +1,60 @@
+name: "deploy-status"
+author: "Sean Erswell-Liljefelt"
+description: "Wait for and retrieve the status of a deployment, even from other workflows or projects"
+branding:
+  color: white
+  icon: repeat
+inputs:
+  project:
+    description: "The full owner/project path in which the deployment job runs"
+    required: true
+  token:
+    description: "A secret holding a Personal Access Token or Similar with relevant role in the target repository"
+    required: true
+  deploy-id:
+    description: "The ID of the deployment you wish to follow"
+    required: true
+  exit-code-on-failure:
+    description: "The exit code to use for unsuccessful deployments DEFAULT=0"
+    required: true
+    default: "0"
+outputs:
+  deploy-result: 
+    value: ${{ steps.wait.outputs.deploy-result }}
+    description: "The outcome of the deployment job as reported by Github"
+runs:
+  using: "composite"
+  steps:
+    - name: Wait for Deployment
+      shell: bash
+      id: wait
+      env:
+        PROJECT: ${{ inputs.project }}
+        TOKEN: ${{ inputs.token }}
+        DEPLOY_ID: ${{ inputs.deploy-id }}
+        EXIT_CODE: ${{ inputs.exit-code-on-failure }}
+      run: |
+        get_deployment_state() {
+          STATE=$(curl -u ":$TOKEN" \
+            "https://api.github.com/repos/$PROJECT/deployments/$DEPLOY_ID/statuses" \
+            -H "Accept: application/vnd.github.v3+json" \
+            | jq --raw-output '.[0].state')
+          if [ -z "$STATE" ]; then
+            echo "Couldn't get the deployment state. Are you sure you provided the correct project, id and credentials?"
+            exit 1
+          fi
+        }
+        while [ "$STATE" != "success" ] && [ "$STATE" != "failure" ] && [ "$STATE" != "error" ] && [ "$STATE" != "inactive" ]; do
+          get_deployment_state
+          if [ "$STATE" = "success" ] || [ "$STATE" = "inactive" ]; then
+            echo "Deployment state is $STATE"
+            echo "::set-output name=deploy-result::$STATE" && exit 0
+          elif [ "$STATE" = "failure" ] || [ "$STATE" = "error" ]; then
+            echo "Deployment state is $STATE"
+            echo "::set-output name=deploy-result::$STATE" && exit "$EXIT_CODE"
+          else
+            echo "Deployment is currently in $STATE state, checking again in 10 seconds..."
+            sleep 10
+            get_deployment_state
+          fi
+        done
