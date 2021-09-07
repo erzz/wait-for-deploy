@@ -16,7 +16,7 @@ inputs:
     required: true
   exit-code-on-failure:
     description: "The exit code to use for unsuccessful deployments DEFAULT=0"
-    required: true
+    required: false
     default: "0"
 outputs:
   deploy-result:
