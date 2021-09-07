@@ -1,4 +1,4 @@
-# deploy-status
+# wait-for-deploy
 
 Wait for any deployment job's status even from other workflows and projects.
 
@@ -50,7 +50,7 @@ jobs:
 
       # Wait for deployment to complete
       - name: Wait for Deployment End 
-        uses: erzz/deploy-status@v1
+        uses: erzz/wait-for-deploy@v1
         id: wait
         with:
           github-token: ${{ secrets.SOME_TOKEN }}
