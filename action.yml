@@ -1,4 +1,4 @@
-name: "deploy-status"
+name: "Wait For Deploy"
 author: "Sean Erswell-Liljefelt"
 description: "Wait for and retrieve the status of a deployment, even from other workflows or projects"
 branding:
@@ -19,7 +19,7 @@ inputs:
     required: true
     default: "0"
 outputs:
-  deploy-result: 
+  deploy-result:
     value: ${{ steps.wait.outputs.deploy-result }}
     description: "The outcome of the deployment job as reported by Github"
 runs:
