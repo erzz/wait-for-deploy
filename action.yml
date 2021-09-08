@@ -55,6 +55,5 @@ runs:
           else
             echo "Deployment is currently in $STATE state, checking again in 10 seconds..."
             sleep 10
-            get_deployment_state
           fi
         done
