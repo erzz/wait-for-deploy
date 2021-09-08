@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/erzz/wait-for-deploy/compare/v1.0.2...v1.1.0) (2021-09-08)
+
+
+### Features
+
+* add a configurable timeout for the action ([c5eb7ac](https://github.com/erzz/wait-for-deploy/commit/c5eb7aceac0d30c3ec1e796e6dc90b2f02a2c09a))
+
 ## [1.0.2](https://github.com/erzz/wait-for-deploy/compare/v1.0.1...v1.0.2) (2021-09-08)
 
 
