@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/erzz/wait-for-deploy/compare/v1.0.1...v1.0.2) (2021-09-08)
+
+
+### Bug Fixes
+
+* remove extra call to get_deployment_state ([0801e75](https://github.com/erzz/wait-for-deploy/commit/0801e75c4fe494799d13af58dad7d3062f7f9d86))
+
 ## [1.0.1](https://github.com/erzz/wait-for-deploy/compare/v1.0.0...v1.0.1) (2021-09-07)
 
 
