@@ -18,6 +18,7 @@ By getting the deployment ID from the Github event that triggers the workflow - 
 | `token`                | A secret holding a PAT or similar to access the project          | true     | `""`            |
 | `deploy-id`            | The ID of the deployment you wish to follow                      | true     | `""`            |
 | `exit-code-on-failure` | The exit code for this action to use if the deployment is failed | false    | `0`             |
+| `timeout`              | Time to wait (seconds) before exiting as a timout                | false.   | `300`           |
 
 ## Outputs
 
